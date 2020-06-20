@@ -1,20 +1,15 @@
 image: maven:3.6.3-adoptopenjdk-14
 
-variables:
-  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
-  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+stages:
+  - test
+
+before_script:
+  - chmod +x mvnw
 
 cache:
   paths:
-    - .m2/repository/
-    - target/
-
-build:
-  stage: build
-  script:
-    - mvn $MAVEN_CLI_OPTS compile
+    - $HOME/.m2
 
 test:
   stage: test
-  script:
-    - mvn $MAVEN_CLI_OPTS test
+  script: ./mvnw package
