@@ -52,7 +52,10 @@
 
         <!-- ===== Version properties ===== -->
         <log4j.version>2.13.3</log4j.version>  <!-- Old Version 2.8.1 -->
-        <spring.version>5.2.6.RELEASE</spring.version>  <!-- Old Version 4.3.7.RELEASE -->
+        <spring.version>5.2.6.RELEASE</spring.version>  <!-- Old Version 4.3.7.RELEASE-->
+
+        <sonar.projectKey>asediaboli_myerp</sonar.projectKey>
+        <sonar.organization>asediaboli</sonar.organization>
     </properties>
 
 
@@ -277,6 +280,7 @@
                 <version>3.13.2</version>
                 <scope>test</scope>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 
