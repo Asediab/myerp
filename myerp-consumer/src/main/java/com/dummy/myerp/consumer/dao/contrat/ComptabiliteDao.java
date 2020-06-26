@@ -3,6 +3,7 @@ package com.dummy.myerp.consumer.dao.contrat;
 import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
 import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
+import com.dummy.myerp.model.bean.comptabilite.SequenceEcritureComptable;
 import com.dummy.myerp.technical.exception.NotFoundException;
 
 import java.util.List;
@@ -83,4 +84,45 @@ public interface ComptabiliteDao {
      * @param pId l'id de l'écriture
      */
     void deleteEcritureComptable(Integer pId);
+
+    /**
+     * Supprime les lignes d'écriture de l'écriture comptable d'id {@code pEcritureId}
+     *
+     * @param pId id de l'écriture
+     */
+    void deleteListLigneEcritureComptable(Integer pId);
+
+
+    /**
+     * Get the last sequence in the Journal Comptable
+     *
+     * @param pAnneeJournal of the sequence
+     * @param pCodeJournal of the Journal
+     * @return the last sequence found
+     */
+    SequenceEcritureComptable getLastSeqOfTheYear(Integer pAnneeJournal, String pCodeJournal);
+
+    /**
+     * Insert new sequence
+     *
+     * @param pSequenceEcritureComptable the sequence to insert
+     * @param pCodeJournal of the Journal
+     */
+    void insertSequenceEcritureComptable(SequenceEcritureComptable pSequenceEcritureComptable, String pCodeJournal);
+
+    /**
+     * Update a sequence
+     *
+     * @param pSequenceEcritureComptable the sequence to update
+     * @param pCodeJournal of the Journal
+     */
+    void updateSequenceEcritureComptable(SequenceEcritureComptable pSequenceEcritureComptable, String pCodeJournal);
+
+    /**
+     * Delete a sequence
+     *
+     * @param pSequenceEcritureComptable the sequence to deleted
+     * @param pCodeJournal of the Journal
+     */
+    void deleteSequenceEcritureComptable(SequenceEcritureComptable pSequenceEcritureComptable, String pCodeJournal);
 }

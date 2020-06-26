@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -104,7 +105,6 @@ public class EcritureComptable {
      *
      * @return {@link BigDecimal}, {@link BigDecimal#ZERO} if no amount debited
      */
-    // TODO à tester
     public BigDecimal getTotalDebit() {
         BigDecimal vRetour = BigDecimal.ZERO;
         for (LigneEcritureComptable vLigneEcritureComptable : listLigneEcriture) {
@@ -123,8 +123,8 @@ public class EcritureComptable {
     public BigDecimal getTotalCredit() {
         BigDecimal vRetour = BigDecimal.ZERO;
         for (LigneEcritureComptable vLigneEcritureComptable : listLigneEcriture) {
-            if (vLigneEcritureComptable.getDebit() != null) {
-                vRetour = vRetour.add(vLigneEcritureComptable.getDebit());
+            if (vLigneEcritureComptable.getCredit() != null) {
+                vRetour = vRetour.add(vLigneEcritureComptable.getCredit());
             }
         }
         return vRetour;
@@ -157,5 +157,23 @@ public class EcritureComptable {
                 .append(StringUtils.join(listLigneEcriture, "\n")).append("\n]")
                 .append("}");
         return vStB.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof EcritureComptable)) return false;
+        EcritureComptable that = (EcritureComptable) o;
+        return getId().equals(that.getId()) &&
+                getJournal().equals(that.getJournal()) &&
+                getReference().equals(that.getReference()) &&
+                getDate().equals(that.getDate()) &&
+                Objects.equals(getLibelle(), that.getLibelle()) &&
+                Objects.equals(getListLigneEcriture(), that.getListLigneEcriture());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getJournal(), getReference(), getDate(), getLibelle(), getListLigneEcriture());
     }
 }

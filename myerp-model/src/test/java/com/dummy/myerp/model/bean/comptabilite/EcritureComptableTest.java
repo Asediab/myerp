@@ -1,89 +1,198 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class EcritureComptableTest {
-    EcritureComptable vEcriture;
+class EcritureComptableTest  {
+    private static final Integer id = 123;
+    private static final String reference = "BQ-2020/00011";
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private static final String libelle = "Equilibrée";
+    private static final BigDecimal[] debits = {new BigDecimal("200.50"), new BigDecimal("100.50"), null, new BigDecimal("40")};
+    private static final BigDecimal[] credits = {null, new BigDecimal("33.00"), new BigDecimal("301"), new BigDecimal("7")};
+    private static EcritureComptable ecritureComptable;
+    private static JournalComptable journalComptable;
+    private static BigDecimal debitSum;
+    private static BigDecimal creditSum;
+
+
+    private String getCodeJournalFromReference(String reference) {
+        return reference.split("-")[0];
+    }
 
     private LigneEcritureComptable createLigne(Integer pCompteComptableNumero, String pDebit, String pCredit) {
         BigDecimal vDebit = pDebit == null ? null : new BigDecimal(pDebit);
         BigDecimal vCredit = pCredit == null ? null : new BigDecimal(pCredit);
         String vLibelle = ObjectUtils.defaultIfNull(vDebit, BigDecimal.ZERO)
                 .subtract(ObjectUtils.defaultIfNull(vCredit, BigDecimal.ZERO)).toPlainString();
-        LigneEcritureComptable vRetour = new LigneEcritureComptable(new CompteComptable(pCompteComptableNumero),
+        return new LigneEcritureComptable(new CompteComptable(pCompteComptableNumero),
                 vLibelle,
                 vDebit, vCredit);
-        return vRetour;
     }
 
-    @Test
-    public void isEquilibree() {
-        vEcriture = new EcritureComptable();
-
-        vEcriture.setLibelle("Equilibrée");
-        vEcriture.getListLigneEcriture().add(this.createLigne(1, "200.50", null));
-        vEcriture.getListLigneEcriture().add(this.createLigne(1, "100.50", "33"));
-        vEcriture.getListLigneEcriture().add(this.createLigne(2, null, "301"));
-        vEcriture.getListLigneEcriture().add(this.createLigne(2, "40", "7"));
-        assertThat(vEcriture.isEquilibree()).isTrue();
-
-        vEcriture.getListLigneEcriture().clear();
-        vEcriture.setLibelle("Non équilibrée");
-        vEcriture.getListLigneEcriture().add(this.createLigne(1, "10", null));
-        vEcriture.getListLigneEcriture().add(this.createLigne(1, "20", "1"));
-        vEcriture.getListLigneEcriture().add(this.createLigne(2, null, "30"));
-        vEcriture.getListLigneEcriture().add(this.createLigne(2, "1", "2"));
-        assertThat(vEcriture.isEquilibree()).isFalse();
+    @BeforeAll
+    private static void beforeAll() {
+        journalComptable = new JournalComptable("BD", "Journal comptable 10");
     }
 
-    @Test
-    public void getTotalDebit_returnsTotalDebit() {
-        vEcriture = new EcritureComptable();
-        BigDecimal[] debits = {new BigDecimal("200.50"), new BigDecimal("100.50"), null, new BigDecimal("40")};
-        BigDecimal[] credits = {null, new BigDecimal("33"), new BigDecimal("301"), new BigDecimal("7")};
+    @BeforeEach
+    private void beforeEach() throws Exception{
+        ecritureComptable = new EcritureComptable();
 
-
-        vEcriture.setLibelle("Equilibrée");
-
+        ecritureComptable.setId(id);
+        ecritureComptable.setJournal(journalComptable);
+        ecritureComptable.setReference(reference);
+        ecritureComptable.setDate(dateFormat.parse("17/05/2020"));
+        ecritureComptable.setLibelle(libelle);
         String debitValue, creditValue;
+
         for (int i = 0; i < 4; i++) {
             debitValue = debits[i] != null ? debits[i].toString() : null;
             creditValue = credits[i] != null ? credits[i].toString() : null;
-            vEcriture.getListLigneEcriture().add(this.createLigne(i < 2 ? 1 : 2, debitValue, creditValue));
+            ecritureComptable.getListLigneEcriture().add(this.createLigne(i < 2 ? 1 : 2, debitValue, creditValue));
         }
 
-        BigDecimal debitSum = debits[0].add(debits[1]).add(debits[3]);
 
-        Assertions.assertEquals(debitSum, vEcriture.getTotalDebit());
+        debitSum = Arrays.asList(debits).stream().filter(Objects::nonNull).reduce(BigDecimal.ZERO, BigDecimal::add);
+        creditSum = Arrays.asList(credits).stream().filter(Objects::nonNull).reduce(BigDecimal.ZERO, BigDecimal::add);
+
     }
 
     @Test
-    public void getTotalDebit_returnsTotalCredit() {
-        vEcriture = new EcritureComptable();
-        BigDecimal[] debits = {new BigDecimal("200.50"), new BigDecimal("100.50"), null, new BigDecimal("40")};
-        BigDecimal[] credits = {null, new BigDecimal("33"), new BigDecimal("301"), new BigDecimal("7")};
+    @Tag("isEquilibree")
+    @DisplayName("If the EcritureComptable is balanced than return true")
+    void isEquilibree_returnsTrue_ofEcritureComptableEquilibree() {
 
-
-        vEcriture.setLibelle("Equilibrée");
-
-        String debitValue, creditValue;
-        for (int i = 0; i < 4; i++) {
-            debitValue = debits[i] != null ? debits[i].toString() : null;
-            creditValue = credits[i] != null ? credits[i].toString() : null;
-            vEcriture.getListLigneEcriture().add(this.createLigne(i < 2 ? 1 : 2, debitValue, creditValue));
-        }
-
-
-        BigDecimal creditSum = credits[1].add(credits[2]).add(credits[3]);
-
-
-        Assertions.assertEquals(creditSum, vEcriture.getTotalCredit());
+        assertThat(creditSum.byteValue()).isEqualTo(debitSum.byteValue());
+        assertThat(ecritureComptable.isEquilibree()).isTrue();
     }
+
+    @Test
+    @Tag("isEquilibree")
+    @DisplayName("If the EcritureComptable is not balanced than return false")
+    void isEquilibree_returnsFalse_ofEcritureComptableNotEquilibree() {
+        ecritureComptable.getListLigneEcriture().add(this.createLigne(3, "0", "200"));
+        ecritureComptable.getListLigneEcriture().add(this.createLigne(3, "4", "2"));
+
+        assertThat(ecritureComptable.isEquilibree()).isFalse();
+    }
+
+
+    @Test
+    @Tag("getTotalDebit")
+    @DisplayName("Return the right total Debit of the EcritureComptable")
+    void getTotalDebit_returnsTotalDebit_ofEcritureComptable() {
+
+        assertThat(ecritureComptable.getTotalDebit()).isEqualTo(debitSum);
+    }
+
+    @Test
+    @Tag("getTotalCredit")
+    @DisplayName("Return the right total Credit of the EcritureComptable")
+    void getTotalDebit_returnsTotalCredit_ofEcritureComptable() {
+
+        assertThat(ecritureComptable.getTotalCredit()).isEqualTo(creditSum);
+    }
+
+    @Test
+    @Tag("getId")
+    @DisplayName("Return the right id of EcritureComptable")
+    void getId() {
+        assertThat(ecritureComptable.getId()).isEqualTo(id);
+
+    }
+
+    @Test
+    @Tag("setId")
+    @DisplayName("Change the id of EcritureComptable")
+    void setId() {
+        Integer newId = 465;
+        ecritureComptable.setId(newId);
+
+        assertThat(ecritureComptable.getId()).isEqualTo(newId);
+    }
+
+    @Test
+    @Tag("getJournal")
+    @DisplayName("Return the right JournalComptabler of EcritureComptable")
+    void getJournal() {
+        assertThat(ecritureComptable.getJournal()).isEqualTo(journalComptable);
+    }
+
+    @Test
+    @Tag("setJournal")
+    @DisplayName("Change the JournalComptabler of EcritureComptable")
+    void setJournal() {
+        JournalComptable newJournalComptable = new JournalComptable("37", "Journal comptable 37");
+
+        ecritureComptable.setJournal(newJournalComptable);
+
+        assertThat(ecritureComptable.getJournal()).isEqualTo(newJournalComptable);
+    }
+
+    @Test
+    @Tag("getReference")
+    @DisplayName("Return the right Reference of EcritureComptable")
+    void getReference() {
+        assertThat(ecritureComptable.getReference()).isEqualTo(reference);
+    }
+
+    @Test
+    @Tag("setReference")
+    @DisplayName("Change the Reference of EcritureComptable with good regex")
+    void setReference_changeReference_ofEcritureComptableWithGoodRegex() {
+        String newReference = "BQ-2016/00001";
+
+        ecritureComptable.setReference(newReference);
+
+        assertThat(ecritureComptable.getReference()).isEqualTo(newReference);
+    }
+
+
+    @Test
+    @Tag("getDate")
+    @DisplayName("Return the right Date of EcritureComptable")
+    void getDate() throws ParseException {
+        assertThat(ecritureComptable.getDate()).isEqualTo(dateFormat.parse("17/05/2020"));
+    }
+
+    @Test
+    @Tag("setDate")
+    @DisplayName("Change the Date of EcritureComptable")
+    void setDate() throws ParseException {
+        Date newDate = dateFormat.parse("17/05/2020");
+
+        ecritureComptable.setDate(newDate);
+
+        assertThat(ecritureComptable.getDate()).isEqualTo(newDate);
+    }
+
+    @Test
+    @Tag("getLibelle")
+    @DisplayName("Return the right Libelle of EcritureComptable")
+    void getLibelle() {
+        assertThat(ecritureComptable.getLibelle()).isEqualTo(libelle);
+    }
+
+    @Test
+    @Tag("setLibelle")
+    @DisplayName("Change the Libelle of EcritureComptable")
+    void setLibelle() {
+        String newLibelle = "Nouvelle ecriture comptable";
+
+        ecritureComptable.setLibelle(newLibelle);
+
+        assertThat(ecritureComptable.getLibelle()).isEqualTo(newLibelle);
+    }
+
 }

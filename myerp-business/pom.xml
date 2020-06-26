@@ -67,6 +67,20 @@
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
         </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>2.2.6</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>javax.el-api</artifactId>
+            <version>3.0.1-b06</version>
+        </dependency>
 
 
         <!-- ========== Test Dependencies ========== -->
@@ -126,6 +140,43 @@
                                 </goals>
                                 <configuration>
                                     <sources>
+                                        <source>src/test/java</source>
+                                        <source>src/test-business/java</source>
+                                    </sources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+                <testResources>
+                    <testResource>
+                        <directory>src/test/resources</directory>
+                    </testResource>
+                    <testResource>
+                        <directory>src/test-business/resources</directory>
+                    </testResource>
+                </testResources>
+            </build>
+        </profile>
+
+        <profile>
+            <id>sonar</id>
+            <build>
+                <plugins>
+                    <!-- Ajout du répertoire src/test-business/java en tant que source de test du module -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>add-test-source</id>
+                                <phase>generate-test-sources</phase>
+                                <goals>
+                                    <goal>add-test-source</goal>
+                                </goals>
+                                <configuration>
+                                    <sources>
+                                        <source>src/test/java</source>
                                         <source>src/test-business/java</source>
                                     </sources>
                                 </configuration>
@@ -149,6 +200,4 @@
     <!-- =============================================================== -->
     <!-- Build -->
     <!-- =============================================================== -->
-    <build>
-    </build>
 </project>

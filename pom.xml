@@ -74,27 +74,39 @@
     <!-- Profiles -->
     <!-- =============================================================== -->
     <profiles>
-        <!-- Profile utilisé par le plugin m2e d'Eclipse -->
         <profile>
-            <id>m2e</id>
-            <activation>
-                <property>
-                    <name>m2e.version</name>
-                </property>
-            </activation>
+            <id>production</id>
             <properties>
-                <maven.build.timestamp>DD/MM/YYYY</maven.build.timestamp>
+                <activatedProperties>production</activatedProperties>
             </properties>
         </profile>
 
         <!-- Profile utilisé pour lancer les tests d'intégration de la couche Business -->
         <profile>
             <id>test-business</id>
+            <properties>
+                <activatedProperties>test-business</activatedProperties>
+            </properties>
         </profile>
 
         <!-- Profile utilisé pour lancer les tests d'intégration de la couche Consumer -->
         <profile>
             <id>test-consumer</id>
+            <properties>
+                <activatedProperties>test-consumer</activatedProperties>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+<!--                <activatedProperties>test-business</activatedProperties>-->
+<!--                <activatedProperties>test-consumer</activatedProperties>-->
+                <activatedProperties>sonar</activatedProperties>
+            </properties>
         </profile>
     </profiles>
 
@@ -407,6 +419,12 @@
                     <artifactId>build-helper-maven-plugin</artifactId>
                     <version>3.1.0</version>  <!-- Old Version 1.10 -->
                 </plugin>
+
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.8.5</version>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
@@ -450,7 +468,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>2.20</version>  <!-- Old Version 3.6.1 -->
+                <version>3.0.0-M3</version>  <!-- Old Version 3.6.1 -->
                 <configuration>
                     <linkXRef>false</linkXRef>
                 </configuration>
@@ -484,7 +502,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.2.0</version>  <!-- Old Version 2.10.4 -->
+                <version>3.1.1</version>  <!-- Old Version 2.10.4 -->
                 <configuration>
                     <!-- Définition de l'exécutable de javadoc à utiliser si on ne prend pas celui par défaut -->
                     <!--javadocExecutable>/opt/java/jdk8/bin/javadoc</javadocExecutable -->

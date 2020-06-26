@@ -2,7 +2,7 @@ image: maven:3.6.3-adoptopenjdk-14
 
 variables:
   SONAR_USER_HOME: "$HOME/.sonar"
-  GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+  GIT_DEPTH: "0"
 
 stages:
 #  - test
@@ -15,14 +15,14 @@ cache:
   paths:
     - $HOME/.m2
 
-#test:
-#  stage: test
-#  script: ./mvnw test
+test:
+  stage: test
+  script: ./mvnw test
 
 sonarcloud-check:
   stage: sonarcloud-check
   cache:
-    key: "SONAR"
+    key: "asediaboli"
     paths:
        - $HOME/.sonar/cache
   script:

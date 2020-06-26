@@ -77,6 +77,20 @@ public class JournalComptable {
         return vStB.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof JournalComptable)) return false;
+        JournalComptable that = (JournalComptable) o;
+        return getCode().equals(that.getCode()) &&
+                getLibelle().equals(that.getLibelle());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCode(), getLibelle());
+    }
+
 
     // ==================== Méthodes STATIC ====================
 
