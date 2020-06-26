@@ -56,6 +56,7 @@
 
         <sonar.projectKey>asediaboli_myerp</sonar.projectKey>
         <sonar.organization>asediaboli</sonar.organization>
+        <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
     </properties>
 
 
