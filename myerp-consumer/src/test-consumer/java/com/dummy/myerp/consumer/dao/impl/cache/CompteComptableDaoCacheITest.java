@@ -5,13 +5,12 @@ import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 
-class CompteComptableDaoCacheTest extends ConsumerTestCase {
+class CompteComptableDaoCacheITest extends ConsumerTestCase {
     private final static CompteComptableDaoCache comptableDaoCache = new CompteComptableDaoCache();
     private static List<CompteComptable> compteComptables;
 
@@ -21,9 +20,8 @@ class CompteComptableDaoCacheTest extends ConsumerTestCase {
     }
 
     @Test
-    @Tag("getByNumero")
-    @DisplayName("Verify that get the right CompteComptable by his number")
-    void getByNumero_returnCompteComptable_byHisNumber() {
+    @DisplayName("Verify CompteComptable by number")
+    void getByNumero_returnCompteComptable() {
         CompteComptable found = null;
 
         for(CompteComptable c: compteComptables) {

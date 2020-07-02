@@ -14,6 +14,7 @@
         <constructor-arg ref="DaoProxy"/>
         <constructor-arg ref="TransactionManager"/>
     </bean>
+    <import resource="classpath:/com/dummy/myerp/consumer/applicationContext.xml" />
 
 
     <!-- ========== Transaction Managers ========== -->

@@ -86,43 +86,27 @@ public interface ComptabiliteDao {
     void deleteEcritureComptable(Integer pId);
 
     /**
-     * Supprime les lignes d'écriture de l'écriture comptable d'id {@code pEcritureId}
      *
-     * @param pId id de l'écriture
+     * @param pJournalCode
+     * @param pAnnee
+     * @return
      */
-    void deleteListLigneEcritureComptable(Integer pId);
-
+    SequenceEcritureComptable getSequenceEcritureComptable(String pJournalCode, Integer pAnnee);
+    /**
+     *
+     * @param sequenceEcritureComptable
+     */
+    void insertSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable );
 
     /**
-     * Get the last sequence in the Journal Comptable
      *
-     * @param pAnneeJournal of the sequence
-     * @param pCodeJournal of the Journal
-     * @return the last sequence found
+     * @param sequenceEcritureComptable
      */
-    SequenceEcritureComptable getLastSeqOfTheYear(Integer pAnneeJournal, String pCodeJournal);
+    void updateSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable);
 
     /**
-     * Insert new sequence
      *
-     * @param pSequenceEcritureComptable the sequence to insert
-     * @param pCodeJournal of the Journal
+     * @param sequenceEcritureComptable
      */
-    void insertSequenceEcritureComptable(SequenceEcritureComptable pSequenceEcritureComptable, String pCodeJournal);
-
-    /**
-     * Update a sequence
-     *
-     * @param pSequenceEcritureComptable the sequence to update
-     * @param pCodeJournal of the Journal
-     */
-    void updateSequenceEcritureComptable(SequenceEcritureComptable pSequenceEcritureComptable, String pCodeJournal);
-
-    /**
-     * Delete a sequence
-     *
-     * @param pSequenceEcritureComptable the sequence to deleted
-     * @param pCodeJournal of the Journal
-     */
-    void deleteSequenceEcritureComptable(SequenceEcritureComptable pSequenceEcritureComptable, String pCodeJournal);
+    void deleteSequenceEcritureComptable(SequenceEcritureComptable sequenceEcritureComptable);
 }

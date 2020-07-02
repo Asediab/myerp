@@ -6,13 +6,12 @@ import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class JournalComptableDaoCacheTest extends ConsumerTestCase {
+class JournalComptableDaoCacheITest extends ConsumerTestCase {
     private final static JournalComptableDaoCache journalComptableDaoCache = new JournalComptableDaoCache();
     private static List<JournalComptable> journalComptables = new ArrayList<>();
 
@@ -22,8 +21,7 @@ class JournalComptableDaoCacheTest extends ConsumerTestCase {
     }
 
     @Test
-    @Tag("getByCode")
-    @DisplayName("Verify that get the right journalComptable by his code")
+    @DisplayName("Verify journalComptable by code")
     void getByCode_returnjournalComptable_byHisCode() {
         JournalComptable found = null;
 

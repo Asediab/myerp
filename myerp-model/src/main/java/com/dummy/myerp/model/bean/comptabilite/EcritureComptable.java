@@ -1,15 +1,13 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
 
-import org.apache.commons.lang3.StringUtils;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,7 +30,7 @@ public class EcritureComptable {
     /**
      * The Reference.
      */
-    @Pattern(regexp = "\\d{1,5}-\\d{4}/\\d{5}")
+    @Pattern(regexp = "[A-Z]{2}-[0-9]{4}/[0-9]{5}")
     private String reference;
     /**
      * The Date.
@@ -136,44 +134,49 @@ public class EcritureComptable {
      * @return boolean
      */
     public boolean isEquilibree() {
-        boolean vRetour = this.getTotalDebit().equals(getTotalCredit());
+        boolean vRetour = this.getTotalDebit().equals(getTotalCredit()); //compareTo
         return vRetour;
     }
 
+
     // ==================== Méthodes ====================
+
+
     @Override
     public String toString() {
-        final StringBuilder vStB = new StringBuilder(this.getClass().getSimpleName());
-        final String vSEP = ", ";
-        vStB.append("{")
-                .append("id=").append(id)
-                .append(vSEP).append("journal=").append(journal)
-                .append(vSEP).append("reference='").append(reference).append('\'')
-                .append(vSEP).append("date=").append(date)
-                .append(vSEP).append("libelle='").append(libelle).append('\'')
-                .append(vSEP).append("totalDebit=").append(this.getTotalDebit().toPlainString())
-                .append(vSEP).append("totalCredit=").append(this.getTotalCredit().toPlainString())
-                .append(vSEP).append("listLigneEcriture=[\n")
-                .append(StringUtils.join(listLigneEcriture, "\n")).append("\n]")
-                .append("}");
-        return vStB.toString();
+        return "EcritureComptable{" +
+                "id=" + id +
+                ", journal=" + journal +
+                ", reference='" + reference + '\'' +
+                ", date=" + date +
+                ", libelle='" + libelle + '\'' +
+                ", listLigneEcriture=" + listLigneEcriture +
+                '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof EcritureComptable)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
+
         EcritureComptable that = (EcritureComptable) o;
-        return getId().equals(that.getId()) &&
-                getJournal().equals(that.getJournal()) &&
-                getReference().equals(that.getReference()) &&
-                getDate().equals(that.getDate()) &&
-                Objects.equals(getLibelle(), that.getLibelle()) &&
-                Objects.equals(getListLigneEcriture(), that.getListLigneEcriture());
+
+        if (!Objects.equals(id, that.id)) return false;
+        if (!Objects.equals(journal, that.journal)) return false;
+        if (!Objects.equals(reference, that.reference)) return false;
+        if (!Objects.equals(date, that.date)) return false;
+        if (!Objects.equals(libelle, that.libelle)) return false;
+        return listLigneEcriture.equals(that.listLigneEcriture);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getJournal(), getReference(), getDate(), getLibelle(), getListLigneEcriture());
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (journal != null ? journal.hashCode() : 0);
+        result = 31 * result + (reference != null ? reference.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (libelle != null ? libelle.hashCode() : 0);
+        result = 31 * result + listLigneEcriture.hashCode();
+        return result;
     }
 }

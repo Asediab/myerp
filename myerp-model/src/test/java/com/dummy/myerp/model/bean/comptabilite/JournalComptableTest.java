@@ -102,4 +102,20 @@ class JournalComptableTest {
         journalComptable.setLibelle(libelle[2]);
         Assertions.assertThat(journalComptable.getLibelle()).isEqualTo(libelle[2]);
     }
+
+    @Test
+    @Tag("toString")
+    @DisplayName("testTostring")
+    void testToStringreturnTheString_ofJournalComptable() {
+        String journalComptableString = "JournalComptable{code='20', libelle='Journal 20'}";
+
+        Assertions.assertThat(journalComptables.get(1).toString()).isEqualTo(journalComptableString);
+    }
+
+    @Test
+    @Tag("hashCode")
+    @DisplayName("Verify that hashCode is always the same")
+    void testHashCode() {
+        Assertions.assertThat(journalComptable.hashCode()).isEqualTo(journalComptable.hashCode());
+    }
 }

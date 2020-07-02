@@ -5,14 +5,13 @@ import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class ComptabiliteDaoImplTest extends ConsumerTestCase {
+class ComptabiliteDaoImplITest extends ConsumerTestCase {
 
     private final static Map<Integer,String> mapCompteComptables = new HashMap<>();
     private final static Map<String,String> mapJournalComptable = new HashMap<>();
@@ -30,9 +29,8 @@ class ComptabiliteDaoImplTest extends ConsumerTestCase {
 
 
     @Test
-    @Tag("getListCompteComptable")
-    @DisplayName("Verify that we get all CompteComptable")
-    void getListCompteComptable(){
+    @DisplayName("Verify we get all CompteComptable")
+    void getListCompteComptables(){
         List<CompteComptable> compteComptables = getDaoProxy().getComptabiliteDao().getListCompteComptable();
 
         Assertions.assertThat(compteComptables.size()).isEqualTo(mapCompteComptables.size());
@@ -42,9 +40,8 @@ class ComptabiliteDaoImplTest extends ConsumerTestCase {
     }
 
     @Test
-    @Tag("getListJournalComptable")
-    @DisplayName("Verify that we get all JournalComptable")
-    void getListJournalComptable(){
+    @DisplayName("Verify we get all JournalComptable")
+    void getListJournalComptables(){
         List<JournalComptable> journalComptables = getDaoProxy().getComptabiliteDao().getListJournalComptable();
 
         Assertions.assertThat(journalComptables.size()).isEqualTo(mapJournalComptable.size());

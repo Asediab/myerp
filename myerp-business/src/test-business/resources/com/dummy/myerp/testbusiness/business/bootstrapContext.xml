@@ -6,10 +6,4 @@
 
 
    <import resource="classpath:/com/dummy/myerp/business/applicationContext.xml"/>
-   <import resource="classpath:/com/dummy/myerp/business/transactionContext.xml"/>
-   <import resource="classpath:/com/dummy/myerp/consumer/applicationContext.xml"/>
-
-
-   <import resource="classpath:/com/dummy/myerp/business/dataSourceContextPostgresql.xml"/>
-
 </beans>

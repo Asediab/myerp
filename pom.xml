@@ -294,6 +294,7 @@
                 <scope>test</scope>
             </dependency>
 
+
         </dependencies>
     </dependencyManagement>
 
@@ -428,6 +429,69 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <!-- ==================================================== Jacoco -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report-aggregate</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report-aggregate</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.basedir}/../target/site/jacoco-aggregate</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Ajout des répertoire src/test/java src/test-consumer/java src/test-business/java en tant que source de test du module -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-test-source</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>add-test-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/test/java</source>
+                                <source>src/test-consumer/java</source>
+                                <source>src/test-business/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+            <testResource>
+                <directory>src/test-consumer/resources</directory>
+            </testResource>
+            <testResource>
+                <directory>src/test-business/resources</directory>
+            </testResource>
+        </testResources>
     </build>
 
 
@@ -438,6 +502,7 @@
         <excludeDefaults>true</excludeDefaults>
         <outputDirectory>${project.build.directory}/site</outputDirectory>
         <plugins>
+
             <!-- ===== Génération du site de documentation de base avec les "rapports génériques" ===== -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

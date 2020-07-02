@@ -74,29 +74,32 @@ public class CompteComptable {
 
 
     // ==================== Méthodes ====================
+
+
     @Override
     public String toString() {
-        final StringBuilder vStB = new StringBuilder(this.getClass().getSimpleName());
-        final String vSEP = ", ";
-        vStB.append("{")
-                .append("numero=").append(numero)
-                .append(vSEP).append("libelle='").append(libelle).append('\'')
-                .append("}");
-        return vStB.toString();
+        return "CompteComptable{" +
+                "numero=" + numero +
+                ", libelle='" + libelle + '\'' +
+                '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CompteComptable)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
+
         CompteComptable that = (CompteComptable) o;
-        return getNumero().equals(that.getNumero()) &&
-                getLibelle().equals(that.getLibelle());
+
+        if (!Objects.equals(numero, that.numero)) return false;
+        return Objects.equals(libelle, that.libelle);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getNumero(), getLibelle());
+        int result = numero != null ? numero.hashCode() : 0;
+        result = 31 * result + (libelle != null ? libelle.hashCode() : 0);
+        return result;
     }
 
 

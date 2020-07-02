@@ -66,29 +66,32 @@ public class JournalComptable {
 
 
     // ==================== Méthodes ====================
+
+
     @Override
     public String toString() {
-        final StringBuilder vStB = new StringBuilder(this.getClass().getSimpleName());
-        final String vSEP = ", ";
-        vStB.append("{")
-                .append("code='").append(code).append('\'')
-                .append(vSEP).append("libelle='").append(libelle).append('\'')
-                .append("}");
-        return vStB.toString();
+        return "JournalComptable{" +
+                "code='" + code + '\'' +
+                ", libelle='" + libelle + '\'' +
+                '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof JournalComptable)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
+
         JournalComptable that = (JournalComptable) o;
-        return getCode().equals(that.getCode()) &&
-                getLibelle().equals(that.getLibelle());
+
+        if (!Objects.equals(code, that.code)) return false;
+        return Objects.equals(libelle, that.libelle);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getCode(), getLibelle());
+        int result = code != null ? code.hashCode() : 0;
+        result = 31 * result + (libelle != null ? libelle.hashCode() : 0);
+        return result;
     }
 
 

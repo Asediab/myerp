@@ -1,13 +1,15 @@
 package com.dummy.myerp.consumer.dao.impl.db.dao;
 
+import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
 import com.dummy.myerp.model.bean.comptabilite.SequenceEcritureComptable;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-class SequenceEcritureComptableDaoImplTest extends ConsumerTestCase {
+import static org.junit.jupiter.api.Assertions.fail;
+
+class SequenceEcritureComptableDaoImplITest extends ConsumerTestCase {
 
     private static Integer annee;
     private static String codeJournal;
@@ -20,15 +22,14 @@ class SequenceEcritureComptableDaoImplTest extends ConsumerTestCase {
     }
 
     @Test
-    @Tag("getLastSeqOfTheYear")
-    @DisplayName("Verify that we get the last SequenceEcritureComptable")
-    void getLastSeqOfTheYear(){
+    @DisplayName("Verify get the last SequenceEcritureComptable")
+    void getSequenceEcritureComptable(){
         annee = 2016;
         codeJournal = "AC";
         derniereValeur = 40;
 
         vSEC = getDaoProxy().getComptabiliteDao().
-                getLastSeqOfTheYear(annee, codeJournal);
+                getSequenceEcritureComptable(codeJournal, annee);
 
         Assertions.assertThat(vSEC).isNotNull();
         Assertions.assertThat(vSEC.getYear()).isEqualTo(annee);
@@ -36,81 +37,79 @@ class SequenceEcritureComptableDaoImplTest extends ConsumerTestCase {
     }
 
     @Test
-    @Tag("getLastSeqOfTheYear")
-    @DisplayName("Verify that we get null if the sequence year doesn't exist")
-    void getLastSeqOfTheYear_returnNull_ofNewSequenceYear(){
-        annee = 2025;
+    @DisplayName("Verify get null if the sequence doesn't exist")
+    void getSequenceEcritureComptable_returnNull_ofNewSequenceYear(){
+        annee = 1000;
         codeJournal = "AC";
 
-        vSEC = getDaoProxy().getComptabiliteDao().getLastSeqOfTheYear(annee, codeJournal);
+        vSEC = getDaoProxy().getComptabiliteDao().getSequenceEcritureComptable(codeJournal, annee);
 
         Assertions.assertThat(vSEC).isNull();
     }
 
     @Test
-    @Tag("getLastSeqOfTheYear")
-    @DisplayName("Verify that we get null if the journal doesn't exist")
-    void getLastSeqOfTheYear_returnNull_ofNewSequenceJournal(){
+    @DisplayName("Verify get null if the journal doesn't exist")
+    void getSequenceEcritureComptable_returnNull_ofNewSequenceJournal(){
         annee = 2016;
-        codeJournal = "ZZ";
+        codeJournal = "VVVV";
 
-        vSEC = getDaoProxy().getComptabiliteDao().getLastSeqOfTheYear(annee, codeJournal);
+        vSEC = getDaoProxy().getComptabiliteDao().getSequenceEcritureComptable(codeJournal, annee);
 
         Assertions.assertThat(vSEC).isNull();
     }
 
     @Test
-    @Tag("insertSequenceEcritureComptable")
+    @DisplayName("Insert SequenceEcritureComptable")
     void insertSequenceEcritureComptable(){
         try{
             annee = 2020;
             codeJournal = "AC";
             derniereValeur = 111;
+            JournalComptable journalComptable = new JournalComptable(codeJournal, "Libelle");
 
             vSEC.setYear(annee);
             vSEC.setLastValue(111);
-            getDaoProxy().getComptabiliteDao().insertSequenceEcritureComptable(vSEC, codeJournal);
+            vSEC.setJournalComptable(journalComptable);
+            getDaoProxy().getComptabiliteDao().insertSequenceEcritureComptable(vSEC);
         }catch(Exception exception){
-
+            fail();
         }
 
-        vSEC = getDaoProxy().getComptabiliteDao().getLastSeqOfTheYear(annee, codeJournal);
+        vSEC = getDaoProxy().getComptabiliteDao().getSequenceEcritureComptable(codeJournal, annee);
 
         Assertions.assertThat(vSEC.getYear()).isEqualTo(annee);
         Assertions.assertThat(vSEC.getLastValue()).isEqualTo(derniereValeur);
 
-        getDaoProxy().getComptabiliteDao().deleteSequenceEcritureComptable(vSEC, codeJournal);
+        getDaoProxy().getComptabiliteDao().deleteSequenceEcritureComptable(vSEC);
 
-        // remove inserted SequenceEcritureComptable
-        vSEC = getDaoProxy().getComptabiliteDao().getLastSeqOfTheYear(annee, codeJournal);
+        vSEC = getDaoProxy().getComptabiliteDao().getSequenceEcritureComptable(codeJournal, annee);
         Assertions.assertThat(vSEC).isNull();
     }
 
     @Test
-    @Tag("updateSequenceEcritureComptable")
-    @DisplayName("Verify that we update the SequenceEcritureComptable")
+    @DisplayName("Update the SequenceEcritureComptable")
     void updateSequenceEcritureComptable(){
-        annee = 2016;
+        annee = 2010;
         codeJournal = "AC";
-        derniereValeur = 555;
+        derniereValeur = 123;
         Integer oldValue;
 
         try{
-            vSEC = getDaoProxy().getComptabiliteDao().getLastSeqOfTheYear(annee, codeJournal);
+            vSEC = getDaoProxy().getComptabiliteDao().getSequenceEcritureComptable(codeJournal, annee);
             oldValue = vSEC.getLastValue();
             vSEC.setLastValue(derniereValeur);
-            getDaoProxy().getComptabiliteDao().updateSequenceEcritureComptable(vSEC, codeJournal);
+            getDaoProxy().getComptabiliteDao().updateSequenceEcritureComptable(vSEC);
 
-            vSEC = getDaoProxy().getComptabiliteDao().getLastSeqOfTheYear(annee, codeJournal);
+            vSEC = getDaoProxy().getComptabiliteDao().getSequenceEcritureComptable(codeJournal, annee);
 
             Assertions.assertThat(vSEC.getYear()).isEqualTo(annee);
             Assertions.assertThat(vSEC.getLastValue()).isEqualTo(derniereValeur);
 
             // restore oldvalue
             vSEC.setLastValue(oldValue);
-            getDaoProxy().getComptabiliteDao().updateSequenceEcritureComptable(vSEC, codeJournal);
+            getDaoProxy().getComptabiliteDao().updateSequenceEcritureComptable(vSEC);
 
-            vSEC = getDaoProxy().getComptabiliteDao().getLastSeqOfTheYear(annee, codeJournal);
+            vSEC = getDaoProxy().getComptabiliteDao().getSequenceEcritureComptable(codeJournal, annee);
 
             Assertions.assertThat(vSEC.getYear()).isEqualTo(annee);
             Assertions.assertThat(vSEC.getLastValue()).isEqualTo(oldValue);

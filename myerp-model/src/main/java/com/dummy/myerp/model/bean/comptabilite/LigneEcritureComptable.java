@@ -5,6 +5,7 @@ import com.dummy.myerp.model.validation.constraint.MontantComptable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 
 /**
@@ -98,16 +99,38 @@ public class LigneEcritureComptable {
 
 
     // ==================== Méthodes ====================
+
+
     @Override
     public String toString() {
-        final StringBuilder vStB = new StringBuilder(this.getClass().getSimpleName());
-        final String vSEP = ", ";
-        vStB.append("{")
-                .append("compteComptable=").append(compteComptable)
-                .append(vSEP).append("libelle='").append(libelle).append('\'')
-                .append(vSEP).append("debit=").append(debit)
-                .append(vSEP).append("credit=").append(credit)
-                .append("}");
-        return vStB.toString();
+        return "LigneEcritureComptable{" +
+                "compteComptable=" + compteComptable +
+                ", libelle='" + libelle + '\'' +
+                ", debit=" + debit +
+                ", credit=" + credit +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        LigneEcritureComptable that = (LigneEcritureComptable) o;
+
+        if (!Objects.equals(compteComptable, that.compteComptable))
+            return false;
+        if (!Objects.equals(libelle, that.libelle)) return false;
+        if (!Objects.equals(debit, that.debit)) return false;
+        return Objects.equals(credit, that.credit);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = compteComptable != null ? compteComptable.hashCode() : 0;
+        result = 31 * result + (libelle != null ? libelle.hashCode() : 0);
+        result = 31 * result + (debit != null ? debit.hashCode() : 0);
+        result = 31 * result + (credit != null ? credit.hashCode() : 0);
+        return result;
     }
 }
