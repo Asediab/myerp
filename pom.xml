@@ -54,9 +54,17 @@
         <log4j.version>2.13.3</log4j.version>  <!-- Old Version 2.8.1 -->
         <spring.version>5.2.6.RELEASE</spring.version>  <!-- Old Version 4.3.7.RELEASE-->
 
-        <sonar.projectKey>asediaboli_myerp</sonar.projectKey>
-        <sonar.organization>asediaboli</sonar.organization>
+        <sonar.projectKey>Asediab_myerp</sonar.projectKey>
+        <sonar.organization>asediab</sonar.organization>
         <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.login>c78b5a67296fecec2ca4fa83df8a14145e6c572a</sonar.login>
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml, ${project.basedir}/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.coverage.exclusions>
+            myerp-technical/src/main/java/com/dummy/myerp/technical/**,
+        </sonar.coverage.exclusions>
     </properties>
 
 
@@ -75,13 +83,6 @@
     <!-- Profiles -->
     <!-- =============================================================== -->
     <profiles>
-        <profile>
-            <id>production</id>
-            <properties>
-                <activatedProperties>production</activatedProperties>
-            </properties>
-        </profile>
-
         <!-- Profile utilisé pour lancer les tests d'intégration de la couche Business -->
         <profile>
             <id>test-business</id>
@@ -104,8 +105,6 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-<!--                <activatedProperties>test-business</activatedProperties>-->
-<!--                <activatedProperties>test-consumer</activatedProperties>-->
                 <activatedProperties>sonar</activatedProperties>
             </properties>
         </profile>
@@ -377,6 +376,11 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>2.22.2</version>  <!-- Old Version 2.20 -->
                 </plugin>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>3.7.0.1746</version>
+                </plugin>
 
                 <!-- ===== Plugin d'analyse de code Checkstyle ===== -->
                 <plugin>
@@ -430,24 +434,45 @@
             </plugins>
         </pluginManagement>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-help-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>show-profiles</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>active-profiles</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- ==================================================== Jacoco -->
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.7.0.1746</version>
+            </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>prepare-and-report</id>
                         <goals>
                             <goal>prepare-agent</goal>
+                            <goal>report</goal>
                         </goals>
                     </execution>
                     <execution>
                         <id>report-aggregate</id>
-                        <phase>test</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>report-aggregate</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.basedir}/../target/site/jacoco-aggregate</outputDirectory>
+                            <outputDirectory>${project.basedir}/target/site/jacoco-aggregate</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -467,29 +492,23 @@
                         <configuration>
                             <sources>
                                 <source>src/test/java</source>
-                                <source>src/test-consumer/java</source>
                                 <source>src/test-business/java</source>
+                                <source>src/test-consumer/java</source>
                             </sources>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
         <testResources>
             <testResource>
                 <directory>src/test/resources</directory>
             </testResource>
             <testResource>
-                <directory>src/test-consumer/resources</directory>
+                <directory>src/test-business/resources</directory>
             </testResource>
             <testResource>
-                <directory>src/test-business/resources</directory>
+                <directory>src/test-consumer/resources</directory>
             </testResource>
         </testResources>
     </build>

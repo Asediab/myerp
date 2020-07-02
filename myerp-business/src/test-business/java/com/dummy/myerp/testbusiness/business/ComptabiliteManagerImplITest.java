@@ -1,5 +1,6 @@
 package com.dummy.myerp.testbusiness.business;
 
+import com.dummy.myerp.business.impl.TransactionManager;
 import com.dummy.myerp.business.impl.manager.ComptabiliteManagerImpl;
 import com.dummy.myerp.consumer.dao.impl.db.dao.ComptabiliteDaoImpl;
 import com.dummy.myerp.model.bean.comptabilite.*;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.transaction.TransactionStatus;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -21,7 +23,7 @@ import java.util.List;
 import static com.dummy.myerp.testbusiness.business.BusinessTestCase.getBusinessProxy;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ComptabiliteManagerImplIT {
+class ComptabiliteManagerImplITest {
 
     private static ComptabiliteManagerImpl manager;
     private EcritureComptable vEcritureComptable;
@@ -30,10 +32,11 @@ public class ComptabiliteManagerImplIT {
     private static Date date;
     private static List<JournalComptable> journalComptableList= new ArrayList<>();
     private JournalComptable journal;
+    private TransactionManager trManager = TransactionManager.getInstance();
 
 
     @BeforeAll
-    private static void beforeAll() throws ParseException {
+    private static void beforeAll() {
         journalComptableList = getBusinessProxy().getComptabiliteManager().getListJournalComptable();
         compteComptable1 = getBusinessProxy().getComptabiliteManager().getListCompteComptable().get(1);
         compteComptable2 = getBusinessProxy().getComptabiliteManager().getListCompteComptable().get(2);
@@ -54,7 +57,7 @@ public class ComptabiliteManagerImplIT {
 
     @Test
     @DisplayName("Add reference")
-    public void addReference() throws ParseException, FunctionalException {
+    void addReference() throws FunctionalException {
 
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable1,
                 null,
@@ -173,7 +176,7 @@ public class ComptabiliteManagerImplIT {
 
         manager.deleteEcritureComptable(vEcritureComptable.getId());
         assert vFound != null;
-        Assertions.assertThat(vFound.equals(vEcritureComptable)).isTrue();
+        Assertions.assertThat(vFound).isEqualTo(vEcritureComptable);
     }
 
     @Test
@@ -186,5 +189,29 @@ public class ComptabiliteManagerImplIT {
                 manager.checkEcritureComptableRG6(e);
             });
         }
+    }
+
+    @Test
+    void transactionManagerStatus(){
+        TransactionStatus vTS = null;
+        try {
+            trManager.commitMyERP(vTS);
+            assertNull( vTS );
+        } finally {
+            vTS = trManager.beginTransactionMyERP();
+            assertNotNull( vTS );
+            trManager.rollbackMyERP(vTS);
+        }
+
+        vTS = trManager.beginTransactionMyERP();
+        try {
+            trManager.commitMyERP(vTS);
+            assertNotNull( vTS );
+            vTS = null;
+        } finally {
+            assertNull( vTS );
+            trManager.rollbackMyERP(vTS);
+        }
+
     }
 }

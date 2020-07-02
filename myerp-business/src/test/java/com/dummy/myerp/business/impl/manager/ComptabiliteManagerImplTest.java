@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
-public class ComptabiliteManagerImplTest {
+class ComptabiliteManagerImplTest {
 
 
     private static ComptabiliteManagerImpl manager;
@@ -48,7 +48,7 @@ public class ComptabiliteManagerImplTest {
     }
 
     @Test
-    public void setReference(){
+    void setReference(){
         SequenceEcritureComptable sequenceEcritureComptable = new SequenceEcritureComptable(journal,2019,1);
         assertEquals("AC-2019/00001",manager.setReference( sequenceEcritureComptable ) );
         assertNotEquals("AL-2019/0001",manager.setReference( sequenceEcritureComptable ) );
@@ -62,7 +62,7 @@ public class ComptabiliteManagerImplTest {
 
     @Test
     @DisplayName("Verify that no exception if the EcritureComptable is correct")
-    public void checkEcritureCompt() throws FunctionalException {
+    void checkEcritureCompt() throws FunctionalException {
         //GIVEN
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                 null, new BigDecimal(123),

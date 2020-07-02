@@ -142,6 +142,9 @@
 
         <profile>
             <id>sonar</id>
+            <activation>
+            <activeByDefault>true</activeByDefault>
+            </activation>
             <build>
                 <plugins>
                     <!-- Ajout du répertoire src/test-consumer/java en tant que source de test du module -->

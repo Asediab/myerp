@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * Classe de test de l'initialisation du contexte Spring
  */
-public class TestInitSpring extends BusinessTestCase {
+class TestInitSpring extends BusinessTestCase {
 
     /**
      * Constructeur.
@@ -23,8 +23,9 @@ public class TestInitSpring extends BusinessTestCase {
      * Teste l'initialisation du contexte Spring
      */
     @Test
-    public void testInit() {
+    void testInit() {
         SpringRegistry.init();
+        assertNotNull(SpringRegistry.getDaoProxy());
         assertNotNull(SpringRegistry.getBusinessProxy());
         assertNotNull(SpringRegistry.getTransactionManager());
     }
