@@ -1,19 +1,25 @@
 language: java
+dist: trusty
+
 jdk:
 - openjdk8
+
 services:
 - docker
+
+before_install:
+  - chmod +x mvnw
+
 before_script:
 - docker-compose -f docker/dev/docker-compose.yml up -d
+
 jobs:
   include:
   - stage: testAll
-    script: mvn test
+    script: ./mvnw test
   - stage: sonar
-    script: mvn verify sonar:sonar
+    script: ./mvnw verify sonar:sonar
 
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
 
 after_script:
 - docker-compose -f docker/dev/docker-compose.yml stop
