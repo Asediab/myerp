@@ -58,7 +58,6 @@ class ComptabiliteManagerImplITest {
     @Test
     @DisplayName("Add reference")
     void addReference() throws FunctionalException {
-
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(compteComptable1,
                 null,
                 new BigDecimal(123),

@@ -22,7 +22,7 @@ class CompteComptableDaoCacheITest extends ConsumerTestCase {
     @Test
     @DisplayName("Verify CompteComptable by number")
     void getByNumero_returnCompteComptable() {
-        CompteComptable found = null;
+        CompteComptable found;
 
         for(CompteComptable c: compteComptables) {
             found = comptableDaoCache.getByNumero(c.getNumero());

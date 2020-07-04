@@ -34,18 +34,23 @@ Il comporte :
     docker-compose rm -v
     docker-compose up
     
-##Test
-###Maven profiles
+## Test
+
+### Maven profiles
+
 * sonar - lancement de tous tests unitaires et IT (profil par défaut)
 * unitTest - lancement de tous tests unitaires
 * test-business - lancement des tests d'intégrations de module business
 * test-consumer - lancement des tests d'intégrations de module consumer
-###Lancement de Test
+
+### Lancement de Test
 En utilisant Maven command test avec balise -P pour spécifier le profil. ` mvn test -P sonar ` 
-###Lancement d'analyse SonarCloud
+
+### Lancement d'analyse SonarCloud
  ` mvn verify sonar:sonar` 
 
-#Correctifs
+# Correctifs
+
 *   ` com.dummy.myerp.model.bean.comptabilit.EcritureComptable`
     * correction de la méthode `getTotalCredit()` qui accédait à la méthode `getDebit()` au lieu de `getCredit()`
     * correction de la méthode `isEquilibree()` qui retournait le résultat d'une égalité à l'aide de `equals()` au lieu de faire une comparaison avec `compareTo()

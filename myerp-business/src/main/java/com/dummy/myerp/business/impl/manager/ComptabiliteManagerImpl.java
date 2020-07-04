@@ -85,10 +85,8 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
      */
     @Override
     public synchronized void addReference(EcritureComptable pEcritureComptable) throws FunctionalException {
-
         Integer annee = Integer.parseInt(new SimpleDateFormat("yyyy").format(pEcritureComptable.getDate()));
         SequenceEcritureComptable pSeq = getSequenceEcritureComptable( pEcritureComptable.getJournal().getCode(),annee);
-
         if ( pSeq != null){
             pSeq.setLastValue( pSeq.getLastValue() + 1 );
             updateSequenceEcritureComptable( pSeq );
@@ -96,9 +94,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
             pSeq = new SequenceEcritureComptable(pEcritureComptable.getJournal() ,annee,1);
             insertSequenceEcritureComptable( pSeq );
         }
-
         pEcritureComptable.setReference( setReference( pSeq ) );
-
     }
 
     /**
