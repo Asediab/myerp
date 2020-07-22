@@ -57,3 +57,4 @@ En utilisant Maven command test avec balise -P pour spécifier le profil. ` mvn 
 *   `com.dummy.myerp.business.impl.manager.ComptabiliteManagerImpl`
     * correction de la méthode `updateEcritureComptable()`. Ajouter la ligne `this.checkEcritureComptable(pEcritureComptable);` afin de vérifier que la référence de l'écriture comptable respecte les règles de comptabilité 5 et 6
 *   `sqlContext.xml`, correction la propriété `SQLinsertListLigneEcritureComptable`, où manquait une virgule dans le INSERT entre les colonnes `debit` et `credit`
+dfdfsf
