@@ -198,7 +198,7 @@
             <dependency>
                 <groupId>org.hibernate.validator</groupId>
                 <artifactId>hibernate-validator</artifactId>
-                <version>6.1.2.Final</version>  <!-- Old Version 4.2.0.Final -->
+                <version>6.1.5.Final</version>  <!-- Old Version 4.2.0.Final -->
             </dependency>
 
             <!-- ===== Apache Commons ===== -->
