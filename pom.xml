@@ -260,7 +260,7 @@
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
-                <version>42.2.12</version>  <!-- Old Version 9.4.1212 -->
+                <version>42.2.25</version>  <!-- Old Version 9.4.1212 -->
                 <scope>runtime</scope>
             </dependency>
 
