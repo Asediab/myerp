@@ -52,7 +52,7 @@
 
         <!-- ===== Version properties ===== -->
         <log4j.version>2.13.3</log4j.version>  <!-- Old Version 2.8.1 -->
-        <spring.version>5.2.6.RELEASE</spring.version>  <!-- Old Version 4.3.7.RELEASE-->
+        <spring.version>5.2.20.RELEASE</spring.version>  <!-- Old Version 4.3.7.RELEASE-->
 
         <sonar.projectKey>Asediab_myerp</sonar.projectKey>
         <sonar.organization>asediab</sonar.organization>
